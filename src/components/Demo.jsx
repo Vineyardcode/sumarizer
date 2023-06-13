@@ -4,6 +4,7 @@ import { copy, linkIcon, loader, tick } from "../assets";
 import { useLazyGetSummaryQuery } from "../services/article";
 
 const Demo = () => {
+
   const [article, setArticle] = useState({
     url: "",
     summary: "",
@@ -11,9 +12,12 @@ const Demo = () => {
   const [allArticles, setAllArticles] = useState([]);
   const [copied, setCopied] = useState("");
 
+
+
   // RTK lazy query
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
 
+  
   // Load data from localStorage on mount
   useEffect(() => {
     const articlesFromLocalStorage = JSON.parse(
@@ -27,25 +31,45 @@ const Demo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const existingArticle = allArticles.find(
       (item) => item.url === article.url
     );
-
+  
     if (existingArticle) return setArticle(existingArticle);
-
+  
     const { data } = await getSummary({ articleUrl: article.url });
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
       const updatedAllArticles = [newArticle, ...allArticles];
-
-    
+  
       setArticle(newArticle);
       setAllArticles(updatedAllArticles);
       localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
+  
+      const url = 'https://rapid-translate-multi-traduction.p.rapidapi.com/t';
+      const options = {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'X-RapidAPI-Key': 'd05993ee04msh118ebfd9851a7dap14830ejsnb0cdd73d1ac0',
+          'X-RapidAPI-Host': 'rapid-translate-multi-traduction.p.rapidapi.com'
+        },
+        body: JSON.stringify({
+          from: 'en',
+          to: 'pl',
+          e: '',
+          q: newArticle.summary
+        })
+      };
+  
+      // Make the second API call using fetch
+      const response = await fetch(url, options);
+      const translatedData = await response.json();
+      console.log(translatedData); // Do something with the translated data
     }
   };
-
+  
 
   const handleCopy = (copyUrl) => {
     setCopied(copyUrl);
