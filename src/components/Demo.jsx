@@ -11,7 +11,7 @@ const Demo = () => {
   });
   const [allArticles, setAllArticles] = useState([]);
   const [copied, setCopied] = useState("");
-
+  const [translation, setTranslation] = useState("");
 
 
   // RTK lazy query
@@ -52,21 +52,21 @@ const Demo = () => {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          'X-RapidAPI-Key': 'd05993ee04msh118ebfd9851a7dap14830ejsnb0cdd73d1ac0',
+          'X-RapidAPI-Key': '',
           'X-RapidAPI-Host': 'rapid-translate-multi-traduction.p.rapidapi.com'
         },
-        body: JSON.stringify({
+        body: {
           from: 'en',
-          to: 'pl',
-          e: '',
+          to: 'cs',
           q: newArticle.summary
-        })
+        }
       };
   
-      // Make the second API call using fetch
+
       const response = await fetch(url, options);
       const translatedData = await response.json();
-      console.log(translatedData); // Do something with the translated data
+      console.log(translatedData); 
+      setTranslation(translatedData)
     }
   };
   
@@ -99,7 +99,7 @@ const Demo = () => {
 
           <input
             type='url'
-            placeholder='Paste an article link'
+            placeholder='Vložte odkaz na článek'
             value={article.url}
             onChange={(e) => setArticle({ ...article, url: e.target.value })}
             onKeyDown={handleKeyDown}
@@ -153,7 +153,7 @@ const Demo = () => {
           article.summary && (
             <div className='flex flex-col gap-3'>
               <h2 className='font-satoshi font-bold text-gray-600 text-xl'>
-                Article <span className='blue_gradient'>Summary</span>
+                <span className='blue_gradient'>Shrnutí</span> článku
               </h2>
               <div className='summary_box'>
                 <p className='font-inter font-medium text-sm text-gray-700'>

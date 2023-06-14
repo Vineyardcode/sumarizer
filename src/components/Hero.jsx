@@ -11,11 +11,11 @@ const Hero = () => {
         onClick={() => window.open('https://github.com/Vineyardcode/sumarizer')}
         className='black_btn'
         >
-          Code
+          Github
         </button>
       </nav>
       <h1 className='head_text'>
-        Summarize Articles with <br 
+        Sumarizujte články pomocí <br 
         className='max-md:hidden'/>
         <span className='main_gradient'>OpenAI GPT-4</span>
       </h1>
